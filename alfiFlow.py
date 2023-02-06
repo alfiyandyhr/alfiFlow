@@ -55,13 +55,13 @@ class alfiProblem():
 		except KeyError:
 			raise Exception("ERROR!!! Please define the equation type to be solved!")
 
-	def save_sol(self, filename):
+	def save_sol(self, outputFolder):
 		if self.options['equationType'] == 'LinearScalarAdvectionEquation':
-			np.savetxt(filename, self.hist)
+			np.savetxt(outputFolder + "solution.dat", self.hist)
 		elif self.options['equationType'] == 'EulerEquation':
-			np.savetxt("r_" + filename, self.hist1)
-			np.savetxt("u_" + filename, self.hist2)
-			np.savetxt("p_" + filename, self.hist3)
+			np.savetxt(outputFolder + "r_solution.dat", self.hist1)
+			np.savetxt(outputFolder + "u_solution.dat", self.hist2)
+			np.savetxt(outputFolder + "p_solution.dat", self.hist3)
 
 class alfiSolver():
 	"""
@@ -522,7 +522,7 @@ class vonNeumannStabilityAnalysis():
 		else:
 			raise Exception("The defined scheme is currently unavailable!")
 
-def plot_solution(filename, equationType, time):
+def plot_solution(folderName, equationType, time):
 	"""
 	Plot solutions at given time(s)
 	If the given time is not available, find the closest data.
@@ -532,7 +532,7 @@ def plot_solution(filename, equationType, time):
 		time: list of time(s)
 	"""
 	if equationType == 'LinearScalarAdvectionEquation':
-		data = np.genfromtxt(filename)
+		data = np.genfromtxt(folderName + "solution.dat")
 		for t in time:
 			idx = np.abs(data[1:,0]-t).argmin() + 1
 			plt.plot(data[0,1:],data[idx,1:],'o-',label=f't = {data[idx,0]}')
@@ -544,9 +544,9 @@ def plot_solution(filename, equationType, time):
 		# plt.ylim([0,1])
 		plt.show()
 	elif equationType == 'EulerEquation':
-		data_r = np.genfromtxt("r_" + filename)
-		data_u = np.genfromtxt("u_" + filename)
-		data_p = np.genfromtxt("p_" + filename)
+		data_r = np.genfromtxt(folderName + "r_solution.dat")
+		data_u = np.genfromtxt(folderName + "u_solution.dat")
+		data_p = np.genfromtxt(folderName + "p_solution.dat")
 		t = time[0]
 		idx = np.abs(data_r[1:,0]-t).argmin() + 1
 		plt.plot(data_r[0,1:],data_r[idx,1:],'b-',label=f'density')
@@ -557,15 +557,15 @@ def plot_solution(filename, equationType, time):
 		plt.legend(loc='center left')
 		plt.show()
 
-def plot_comparison(filename, equationType, limiter, var, time):
+def plot_comparison(folderName, equationType, limiter, var, time):
 	if equationType == 'EulerEquation':
 		data_r = []
 		data_u = []
 		data_p = []
 		for _, name in enumerate(limiter):
-			data_r.append(np.genfromtxt('solutions/'+name+'/r_'+filename))
-			data_u.append(np.genfromtxt('solutions/'+name+'/u_'+filename))
-			data_p.append(np.genfromtxt('solutions/'+name+'/p_'+filename))
+			data_r.append(np.genfromtxt(folderName + name + '/r_solution.dat'))
+			data_u.append(np.genfromtxt(folderName + name + '/u_solution.dat'))
+			data_p.append(np.genfromtxt(folderName + name + '/p_solution.dat'))
 		t = time[0]
 		idx = np.abs(data_r[0][1:,0]-t).argmin() + 1
 		for i, name in enumerate(limiter):
