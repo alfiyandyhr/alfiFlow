@@ -88,19 +88,19 @@ solver = alfiSolver(options=solverOptions)
 
 solver.initialize(problem)
 solver.solve(problem, verbose=True)
-problem.save_sol(filename="solution.dat")
+problem.save_sol(outputFolder="solutions/EulerEquations/")
 
 # ======================================
 # 		Visualizing the solutions		
 # ======================================
 
-plot_solution(filename="solution.dat",
+plot_solution(folderName="solutions/EulerEquations/",
 			  equationType='EulerEquation',
 			  time=[0.20])
 
 limiter_list = ['minmod', 'van_Albada1', 'van_Albada2', 'van_Leer', 'superbee']
 
-plot_comparison(filename="solution.dat",
+plot_comparison(folderName="solutions/EulerEquations/",
 				limiter=limiter_list,
 			    equationType='EulerEquation',
 			    var=["r","u","p"],
