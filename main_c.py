@@ -1,7 +1,6 @@
 # ==========================
 # 		Import modules		
 # ==========================
-
 from alfiFlow import alfiSolver, alfiProblem
 from alfiFlow import plot_solution, plot_comparison, plot_limiter_characteristics
 import numpy as np
