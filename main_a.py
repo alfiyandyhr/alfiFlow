@@ -53,6 +53,7 @@ problem = alfiProblem(options=problemOptions)
 
 solverOptions = {
 	# Common
+	'type': 'FiniteDifferenceMethod',
 	# 'scheme': 'CentralDifference',
 	# 'scheme': 'FirstOrderUpwindDifference',
 	'scheme': 'LaxScheme',
@@ -79,10 +80,12 @@ solver = alfiSolver(options=solverOptions)
 
 solver.initialize(problem)
 solver.solve(problem, verbose=True)
-problem.save_sol(filename="solution.dat")
+problem.save_sol(outputFolder="solutions/LinearScalarAdvectionEquation/")
 
 # ======================================
 # 		Visualizing the solutions		
 # ======================================
 
-plot_solution(filename="solution.dat", time=[0.00, 0.50])
+plot_solution(folderName="solutions/LinearScalarAdvectionEquation/",
+			  equationType='LinearScalarAdvectionEquation',
+			  time=[0.00, 0.50])
